@@ -1,63 +1,104 @@
-RAG-based SOP Assistant
+📄 RAGify – Ask Your PDF
 
-A Retrieval-Augmented Generation (RAG) system that answers questions from PDF documents using a vector database and an LLM.
+A Retrieval-Augmented Generation (RAG) application that lets users ask questions from a PDF and get accurate, concise answers with citations (source + page number).
 
-Features
+---
 
-- Ask questions from a PDF document
-- Uses FAISS vector database for semantic search
-- FastAPI backend for API handling
-- Streamlit chat interface for user interaction
-- Context-based answers from document
+🚀 Features
 
-Project Structure
+- 🔍 Ask questions directly from PDF documents
+- 📌 Returns exact answers (no unnecessary text)
+- 📄 Displays source file and page number
+- ⚡ Fast search using FAISS vector database
+- 💬 Chat-style interface with Streamlit
+- 🚫 Handles irrelevant queries → "Not found in document"
 
-production_rag/
+---
 
-- src/ → Backend logic (RAG pipeline)
-- ui/ → Streamlit user interface
-- data/ → PDF documents used for retrieval
+🧠 How It Works
 
-Tech Stack
+1. Load PDF document
+2. Split into smaller chunks
+3. Convert chunks into embeddings
+4. Store embeddings in FAISS
+5. Convert user query into embedding
+6. Retrieve relevant chunks
+7. Generate answer using LLM
+
+---
+
+🛠️ Tech Stack
 
 - Python
 - LangChain
 - FAISS
-- FastAPI
+- Sentence Transformers
 - Streamlit
+- Ollama (Mistral)
 
-Installation
+---
 
-Clone the repository
+📂 Project Structure
 
-git clone https://github.com/YOUR_USERNAME/rag-document-assistant.git
+RAG_PROJECT/
+│
+├── app.py              # Streamlit UI
+├── query.py            # RAG pipeline logic
+├── ingest.py           # PDF → FAISS indexing
+├── requirements.txt
+├── README.md
+│
+├── data/
+│   └── policy.pdf
+│
+├── faiss_index/
+│   ├── index.faiss
+│   └── index.pkl
 
-Go to the project folder
+---
 
+⚙️ Installation
+
+git clone https://github.com/maheswarimanamasi/rag-document-assistant.git
 cd rag-document-assistant
-
-Install dependencies
-
 pip install -r requirements.txt
 
-Run the Project
+---
 
-Step 1: Create the vector database
+▶️ How to Run
 
-python production_rag/src/ingest.py
+Step 1: Create Vector Database
 
-Step 2: Start the API server
+python ingest.py
 
-uvicorn production_rag.src.api:app --reload
+Step 2: Start Application
 
-Step 3: Run the Streamlit UI
+streamlit run app.py
 
-streamlit run production_rag/ui/app.py
+---
 
-Example Question
+💡 Example Queries
 
-how many sick leave days are allowed
+- What are working hours?
+- How many sick leave days are allowed?
+- What is maternity leave policy?
+- Who is the CEO? (should return Not found)
 
-Output
+---
 
-The answer is 10 sick leave days per year.
+📸 Screenshots
+
+## 📸 Screenshots
+
+### 🖥️ Application UI
+![UI](assets/ui.png)
+
+### 📄 Answer with Citations
+![Answer](assets/answer.png)
+
+
+⚠️ Limitations
+
+- Works best with structured PDFs
+- Not optimized for very large documents
+- Accuracy depends on document quality
