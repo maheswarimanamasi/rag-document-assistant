@@ -100,6 +100,10 @@ streamlit run app.py
 ### 📄 Answer with Citations
 ![Answer](assets/answer.png)
 
+## 🎥 Demo
+
+![Demo](assets/demo.mp4)
+
 
 ⚠️ Limitations
 
