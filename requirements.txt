@@ -5,3 +5,4 @@ streamlit
 faiss-cpu
 sentence-transformers
 langchain-text-spitters
+ollama
