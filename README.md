@@ -5,12 +5,12 @@ A Retrieval-Augmented Generation (RAG) application that lets users ask questions
 ---
 
 🚀 Features
-
-- 🔍 Ask questions directly from PDF documents
-- 📌 Returns exact answers (no unnecessary text)
+- 🔍 chat with pdf using RAG
+- 📌 Returns exact answers with page citations (no unnecessary text)
 - 📄 Displays source file and page number
 - ⚡ Fast search using FAISS vector database
 - 💬 Chat-style interface with Streamlit
+-    Local LLM using Mistral (ollama)
 - 🚫 Handles irrelevant queries → "Not found in document"
 
 ---
@@ -34,6 +34,7 @@ A Retrieval-Augmented Generation (RAG) application that lets users ask questions
 - FAISS
 - Sentence Transformers
 - Streamlit
+- HuggingFace Embeddings
 - Ollama (Mistral)
 
 ---
@@ -57,24 +58,27 @@ RAG_PROJECT/
 
 ---
 
-⚙️ Installation
-
-git clone https://github.com/maheswarimanamasi/rag-document-assistant.git
-cd rag-document-assistant
-pip install -r requirements.txt
-
----
 
 ▶️ How to Run
 
-Step 1: Create Vector Database
+## 🚀 How to Run
 
+### 1. Clone the repo
+git clone https://github.com/your-username/rag-document-assistant.git
+cd rag-document-assistant
+
+### 2. Create virtual environment
+python -m venv .venv
+.venv\Scripts\activate   # Windows
+
+### 3. Install dependencies
+pip install -r requirements.txt
+
+### 4. Run ingestion
 python ingest.py
 
-Step 2: Start Application
-
+### 5. Start app
 streamlit run app.py
-
 ---
 
 💡 Example Queries
