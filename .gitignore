@@ -1,0 +1,18 @@
+# Python cache
+__pycache__/
+*.pyc
+
+# Virtual environment
+.venv/
+env/
+
+# Environment variables
+.env
+
+# Vector database
+faiss_index/
+vectorstore/
+
+# System files
+.DS_Store
+Thumbs.db
