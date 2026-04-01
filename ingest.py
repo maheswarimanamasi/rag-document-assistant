@@ -18,6 +18,7 @@ text_splitter = RecursiveCharacterTextSplitter(
 )
 
 docs = text_splitter.split_documents(documents)
+print("Total chunks created :",len(docs))
 
 # Embeddings
 embeddings = HuggingFaceEmbeddings(model_name="all-MiniLM-L6-v2")
