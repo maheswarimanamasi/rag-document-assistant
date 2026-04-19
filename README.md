@@ -104,7 +104,7 @@ streamlit run app.py
 ![UI](assets/ui.png)
 
 ### 📄 Answer with Citations
-![Answer](assets/answer.png)
+![Answer](assets/img.png)
 
 ## 🎥 Demo
 
