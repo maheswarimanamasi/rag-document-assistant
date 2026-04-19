@@ -1,9 +1,14 @@
 import streamlit as st
 from query import ask_question
+import os
 
-# ---------------------------
-# Page Config
-# ---------------------------
+# ✅ Move imports to top
+from langchain_community.document_loaders import PyPDFLoader
+from langchain_text_splitters import RecursiveCharacterTextSplitter
+from langchain_community.vectorstores import FAISS
+from langchain_community.embeddings import HuggingFaceEmbeddings
+
+
 st.set_page_config(
     page_title="RAGify",
     page_icon="📄",
@@ -12,6 +17,36 @@ st.set_page_config(
 
 st.title("📄 RAGify - Chat with your PDF")
 
+# ✅ ONLY ONE uploader
+uploaded_file = st.file_uploader("Upload your PDF", type="pdf")
+
+# ✅ SINGLE clean block
+if uploaded_file is not None:
+    os.makedirs("temp", exist_ok=True)
+
+    file_path = os.path.join("temp", uploaded_file.name)
+
+    with open(file_path, "wb") as f:
+        f.write(uploaded_file.read())
+
+    # ✅ STEP 3 (correct)
+    loader = PyPDFLoader(file_path)
+    documents = loader.load()
+    for doc in documents:
+        doc.metadata["source"]=uploaded_file.name
+
+    text_splitter = RecursiveCharacterTextSplitter(
+        chunk_size=500,
+        chunk_overlap=100
+    )
+
+    docs = text_splitter.split_documents(documents)
+
+    embeddings = HuggingFaceEmbeddings(model_name="all-MiniLM-L6-v2")
+
+    db = FAISS.from_documents(docs, embeddings)
+
+    st.success("PDF processed successfully")
 # ---------------------------
 # Session State (Chat Memory)
 # ---------------------------
@@ -58,7 +93,7 @@ if prompt := st.chat_input("Ask something about the document..."):
 
     # 🔥 Spinner (correct placement)
     with st.spinner("🔍 Searching document..."):
-        answer, docs = ask_question(prompt)
+        answer, docs = ask_question(prompt,db)
 
     # 🔹 Save assistant message WITH docs
     st.session_state.messages.append({
@@ -73,6 +108,7 @@ if prompt := st.chat_input("Ask something about the document..."):
 
         # 🔥 Show sources ONLY if valid
         if docs:
+            docs=docs[:1]
             seen = set()
             st.markdown("**Sources:**")
 

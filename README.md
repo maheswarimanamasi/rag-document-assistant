@@ -1,39 +1,36 @@
-📄 RAGify – Ask Your PDF
+📄 RAG Document Assistant
 
-A Retrieval-Augmented Generation (RAG) application that lets users ask questions from a PDF and get accurate, concise answers with citations (source + page number).
+A simple Retrieval-Augmented Generation (RAG) app to chat with PDFs using LangChain, FAISS, and local LLM.
 
 ---
 
 🚀 Features
-- 🔍 chat with pdf using RAG
-- 📌 Returns exact answers with page citations (no unnecessary text)
-- 📄 Displays source file and page number
-- ⚡ Fast search using FAISS vector database
-- 💬 Chat-style interface with Streamlit
--    Local LLM using Mistral (ollama)
-- 🚫 Handles irrelevant queries → "Not found in document"
+
+- Upload any PDF
+- Ask questions about the document
+- Shows source pages for answers
+- Works locally using embeddings + FAISS
 
 ---
 
+"
 🧠 How It Works
 
-1. Load PDF document
-2. Split into smaller chunks
-3. Convert chunks into embeddings
-4. Store embeddings in FAISS
-5. Convert user query into embedding
-6. Retrieve relevant chunks
-7. Generate answer using LLM
+Load  PDF document
+Split into smaller chunks
+Convert chunks into embeddings
+Store embeddings in FAISS
+Convert user query into embedding
+Retrieve relevant chunks
+Generate answer using LLM
 
----
 
-🛠️ Tech Stack
+🛠 Tech Stack
 
 - Python
+- Streamlit
 - LangChain
 - FAISS
-- Sentence Transformers
-- Streamlit
 - HuggingFace Embeddings
 - Ollama (Mistral)
 
@@ -41,54 +38,63 @@ A Retrieval-Augmented Generation (RAG) application that lets users ask questions
 
 📂 Project Structure
 
-RAG_PROJECT/
-│
-├── app.py              # Streamlit UI
-├── query.py            # RAG pipeline logic
-├── ingest.py           # PDF → FAISS indexing
-├── requirements.txt
-├── README.md
-│
-├── data/
-│   └── policy.pdf
-│
-├── faiss_index/
-│   ├── index.faiss
-│   └── index.pkl
-
+app.py          # Streamlit UI
+query.py        # Retrieval + LLM logic
+ingest.py       # PDF processing (optional)
+requirements.txt
+README.md
 ---
 
+⚙️ Setup Instructions
 
-▶️ How to Run
+1. Clone repo
 
-## 🚀 How to Run
-
-### 1. Clone the repo
-git clone https://github.com/your-username/rag-document-assistant.git
+git clone <https://github.com/maheswarimanamasi/rag-document-assistant.git>
 cd rag-document-assistant
 
-### 2. Create virtual environment
-python -m venv .venv
-.venv\Scripts\activate   # Windows
+2. Create virtual environment
 
-### 3. Install dependencies
+python -m venv venv
+venv\Scripts\activate
+
+3. Install dependencies
+
 pip install -r requirements.txt
 
-### 4. Run ingestion
+4. Run ingestion
+
 python ingest.py
 
-### 5. Start app
+5. Run app
+
 streamlit run app.py
----
-
-💡 Example Queries
-
-- What are working hours?
-- How many sick leave days are allowed?
-- What is maternity leave policy?
-- Who is the CEO? (should return Not found)
 
 ---
+
+📌 Usage
+
+1. Upload a PDF
+2. Ask questions
+3. Get answers with sources
+
+---
+
+⚠️ Notes
+
+- Only answers from document context
+- If not found → returns "Not found in document"
+
+---
+
+💡 Example Questions
+
+- What is this document about?
+- List key points
+- Explain section 2
+
+---
+
+
 
 📸 Screenshots
 

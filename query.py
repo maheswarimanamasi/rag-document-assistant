@@ -1,43 +1,25 @@
-
-from langchain_community.vectorstores import FAISS
-from langchain_community.embeddings import HuggingFaceEmbeddings
 from langchain_community.llms import Ollama
 
-
-# 🔹 Load embedding + DB
-embeddings = HuggingFaceEmbeddings(model_name="all-MiniLM-L6-v2")
-
-db = FAISS.load_local(
-    "faiss_index",
-    embeddings,
-    allow_dangerous_deserialization=True
-)
-
-# 🔹 Load Mistral
+# Load LLM
 llm = Ollama(model="mistral")
 
+def ask_question(question: str, db):
 
-def ask_question(question: str):
+    # 🔹 Step 1: retrieve docs
+    docs_with_scores = db.similarity_search_with_score(question, k=2)
 
-    # 🔥 Step 1: retrieve docs
-    docs_with_scores = db.similarity_search_with_score(question, k=3)
-    docs_with_scores.sort(key=lambda x:x[1])
-    docs = [doc for doc, _ in docs_with_scores[:2]]
+    docs = []
     for doc, score in docs_with_scores:
-        if score < 1.5:
+        if score < 1.5:   # adjust if needed
             docs.append(doc)
-
-    # fallback
-    if not docs and docs_with_scores:
-        docs = [docs_with_scores[0][0]]
 
     if not docs:
         return "Not found in document", []
 
-    # 🔹 Step 2: context
+    # 🔹 Step 2: create context
     context = "\n\n".join([doc.page_content for doc in docs])
 
-    # 🔥 Step 3: strict prompt (VERY IMPORTANT)
+    # 🔹 Step 3: prompt
     prompt = f"""
 You are a strict assistant.
 
@@ -55,12 +37,10 @@ Question:
 Answer:
 """
 
-    # 🔥 Step 4: LLM call
-    answer = llm.invoke(prompt)
+    # 🔹 Step 4: LLM call
+    answer = llm.invoke(prompt).strip()
 
-    answer = answer.strip()
-
-    # 🔥 Step 5: remove fake sources
+    # 🔹 Step 5: clean fallback
     if "not found" in answer.lower():
         return "Not found in document", []
 
